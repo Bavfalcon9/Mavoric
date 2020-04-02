@@ -1,5 +1,5 @@
 name: Mavoric
-main: Bavfalcon9\Mavoric\Main\Anticheat\Main
+main: Bavfalcon9\Mavoric\Anticheat\Main
 version: 1.0.5
 api: [3.0.0]
 load: POSTWORLD
