@@ -85,7 +85,7 @@ class Speed extends Cheat {
         
 
         if($dX > $expected){
-            if($this->lastDistance[$player->getName()][0] >= $expected){
+            if($this->lastDistance[$player->getName()][0] > $expected){
                 $this->increment($player->getName(), 1);
                 $this->notifyAndIncrement($player, 2, 1, [
                     "TPS" => $player->getServer()->getTicksPerSecond(),
@@ -95,7 +95,7 @@ class Speed extends Cheat {
         }
 
         if($dZ > $expected){
-            if($this->lastDistance[$player->getName()][1] >= $expected){
+            if($this->lastDistance[$player->getName()][1] > $expected){
                 $this->increment($player->getName(), 1);
                 $this->notifyAndIncrement($player, 2, 1, [
                     "TPS" => $player->getServer()->getTicksPerSecond(),
