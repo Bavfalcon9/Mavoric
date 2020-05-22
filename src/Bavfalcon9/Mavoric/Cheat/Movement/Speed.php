@@ -78,7 +78,7 @@ class Speed extends Cheat {
 
         $speeds = [$dX, $dZ];
         print_r("Expected speed is: " . $expected . "\n");
-        print_r("Speed Given: [DX: " . $dX . " | DZ: " . $dz . "]\n");
+        print_r("Speed Given: [DX: " . $dX . " | DZ: " . $dZ . "]\n");
         
 
         if($dX > $expected || $dX < -$expected){
