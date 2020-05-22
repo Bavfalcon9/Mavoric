@@ -26,10 +26,6 @@ use Bavfalcon9\Mavoric\Mavoric;
 use Bavfalcon9\Mavoric\Cheat\Cheat;
 use Bavfalcon9\Mavoric\Cheat\CheatManager;
 
-function square($x) : int{
-    return $x * $x;
-}
-
 class Speed extends Cheat {
 
     private $lastDistance = [];
@@ -82,10 +78,11 @@ class Speed extends Cheat {
 
         $speeds = [$dX, $dZ];
         print_r("Expected speed is: " . $expected . "\n");
+        print_r("Speed Given: [DX: " . $dX . " | DZ: " . $dz . "]\n");
         
 
-        if($dX > $expected){
-            if($this->lastDistance[$player->getName()][0] > $expected){
+        if($dX > $expected || $dX < -$expected){
+            if($this->lastDistance[$player->getName()][0] >= $expected){
                 $this->increment($player->getName(), 1);
                 $this->notifyAndIncrement($player, 2, 1, [
                     "TPS" => $player->getServer()->getTicksPerSecond(),
@@ -94,8 +91,8 @@ class Speed extends Cheat {
             }
         }
 
-        if($dZ > $expected){
-            if($this->lastDistance[$player->getName()][1] > $expected){
+        if($dZ > $expected || $dZ < -$expected){
+            if($this->lastDistance[$player->getName()][1] >= $expected){
                 $this->increment($player->getName(), 1);
                 $this->notifyAndIncrement($player, 2, 1, [
                     "TPS" => $player->getServer()->getTicksPerSecond(),
