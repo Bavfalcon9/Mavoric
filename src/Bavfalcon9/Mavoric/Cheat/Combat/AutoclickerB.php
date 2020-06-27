@@ -20,90 +20,78 @@
 namespace Bavfalcon9\Mavoric\Cheat\Combat;
 
 use pocketmine\Player;
-use pocketmine\Server;
 use Bavfalcon9\Mavoric\Mavoric;
 use Bavfalcon9\Mavoric\Cheat\Cheat;
 use Bavfalcon9\Mavoric\Events\Player\PlayerClickEvent;
 
 class AutoclickerB extends Cheat{
 
-    /** @var int[] */
-    private $cps;
-    /** @var int[] */
-    private $clicks;
-    /** @var int[] */
-    private $level;
+    private $previousClick = [];
+    private $allClicks = [];
+
+    private $allDeviations = [];
+
+    private $level = [];
 
     public function __construct(Mavoric $mavoric, int $id = -1) {
-        parent::__construct($mavoric, "AutoclickerB", "Combat", $id, false);
-        $this->cps = [];
-        $this->clicks = [];
-        $this->level = [];
+        parent::__construct($mavoric, "AutoclickerB", "Combat", $id, true);
     }
 
     public function onClick(PlayerClickEvent $ev): void {
-        $this->macroCheck($ev->getPlayer());
+        $this->consistencyCheck($ev->getPlayer());
     }
 
-    private function macroCheck(Player $player): void {
-        if (!isset($this->cps[$player->getName()])) {
-            $this->cps[$player->getName()] = [];
+    private function consistencyCheck(Player $player): void {
+        $name = $player->getName();
+        if(!isset($this->previousClick[$name])){
+            $this->previousClick[$name] = microtime(true) * 1000;
+            $this->allClicks[$name] = [];
+            $this->allDeviations[$name] = [];
+            $this->level[$name] = 0;
+            return;
         }
-
-        $time = microtime(true);
-
-        array_push($this->cps[$player->getName()], microtime(true));
-
-        $cps = count(array_filter($this->cps[$player->getName()],  function (float $t) use ($time) : bool {
-            return ($time - $t) <= 1;
-        }));
-
-        if ($player->getPing() >= 200) return;
-        if ($player->getServer()->getTicksPerSecond() <= 17) return;
-
-        if (!isset($this->clicks[$player->getName()])) $this->clicks[$player->getName()] = [];
-        if (!isset($this->level[$player->getName()])) $this->level[$player->getName()] = 1;
-
-        array_push($this->clicks[$player->getName()], $cps);
-        if (count($this->clicks[$player->getName()]) === 20) {
-            if ($this->macroTest($this->clicks[$player->getName()], $cps, $player) === true) {
-                $this->level[$player->getName()] = 2;
-                $this->increment($player->getName(), 1);
-                $this->notifyAndIncrement($player, 2, 1, [
-                    "CPS" => $cps,
-                    "Ping" => $player->getPing()
-                ]);
+        $currentTime = microtime(true) * 1000;
+        $time = $currentTime - $this->previousClick[$name];
+        if($time > 1000){
+            $this->previousClick[$name] = microtime(true) * 1000;
+            return;
+        }
+        array_push($this->allClicks[$name], $time);
+        $this->previousClick[$name] = microtime(true) * 1000;
+        if(count($this->allClicks[$name]) < 10) return;
+        $averageTime = array_sum($this->allClicks[$name]) / count($this->allClicks[$name]);
+        $deviation = abs($time - $averageTime);
+        array_push($this->allDeviations[$name], $deviation);
+        if(count($this->allDeviations[$name]) < 10) return;
+        $averageDeviation = array_sum($this->allDeviations[$name]) / count($this->allDeviations[$name]);
+        if($averageDeviation < 10 && count($this->allDeviations[$name]) >= 35){
+            $badDeviations = [];
+            foreach($this->allDeviations[$name] as $number){
+                if($number < 10) array_push($badDeviations, $number);
             }
-
-
-            Server::getInstance()->getLogger()->debug($player->getName() . "'s CPS: " . implode(", ", $this->clicks[$player->getName()]));
-            unset($this->clicks[$player->getName()]);
-            $this->clicks[$player->getName()] = [];
-        }
-    }
-
-    private function macroTest(array $clicks, int $cps, Player $player): bool {
-        $min = min($clicks);
-        $max = max($clicks);
-
-        if ($max - $min <= 2) {
-            if (count(array_unique($clicks)) <= 3) {
-                if (end($clicks) === $cps) {
-                    $this->level[$player->getName()] = $this->level[$player->getName()] + 1;
-                    if ($this->level[$player->getName()] === 5) return true;
-                    else return false;
+            $badCount = count($badDeviations);
+            if($badCount >= 25){
+                $this->level[$name] = $this->level[$name] + 1;
+                if($this->level[$name] >= 2.5){
+                    $this->increment($player->getName(), 1);
+                    $this->notifyAndIncrement($player, 4, 1, [
+                        "Ping" => $player->getPing()
+                    ]);
+                    $this->level[$name] = 1;
                 }
-                // this is repetitive, remove 
-                if ($this->level[$player->getName()] !== 1) $this->level[$player->getName()] = $this->level[$player->getName()] - 1;
-                return false;
+            } else {
+                $this->level[$name] = $this->level[$name] * 0.5;
             }
-            // this is repetitive, remove 
-            if ($this->level[$player->getName()] !== 1) $this->level[$player->getName()] = $this->level[$player->getName()] - 1;
-            return false;
+            $badDeviations = [];
         }
-        // this is repetitive, remove 
-        if ($this->level[$player->getName()] !== 1) $this->level[$player->getName()] = $this->level[$player->getName()] - 1;
-        return false;
+        if(count($this->allClicks[$name]) >= 45){
+            unset($this->allClicks[$name]);
+            $this->allClicks[$name] = [];
+        }
+        if(count($this->allDeviations[$name]) >= 55){
+            unset($this->allDeviations[$name]);
+            $this->allDeviations[$name] = [];
+        }
     }
 
 }
