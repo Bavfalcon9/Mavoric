@@ -63,7 +63,7 @@ class AutoclickerB extends Cheat{
         array_push($this->allDeviations[$name], $deviation);
         if(count($this->allDeviations[$name]) < 5) return;
         $averageDeviation = array_sum($this->allDeviations[$name]) / count($this->allDeviations[$name]);
-        $this->getServer()->broadcastMessage("Average Deviation: $averageDeviation");
+        //$this->getServer()->broadcastMessage("Average Deviation: $averageDeviation");
         array_push($this->averageDeviations[$name], $averageDeviation);
         if(count($this->averageDeviations[$name]) < 10) return;
         if($averageDeviation < 20 && count($this->allDeviations[$name]) >= 20){
