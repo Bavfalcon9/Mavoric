@@ -30,23 +30,22 @@ class AutoclickerB extends Cheat{
     private $allClicks = [];
 
     private $allDeviations = [];
+    private $averageDeviations = [];
 
     private $level = [];
 
     public function __construct(Mavoric $mavoric, int $id = -1) {
-        parent::__construct($mavoric, "AutoclickerB", "Combat", $id, true);
+        parent::__construct($mavoric, "AutoclickerB", "Combat", $id, false);
     }
 
     public function onClick(PlayerClickEvent $ev): void {
-        $this->consistencyCheck($ev->getPlayer());
-    }
-
-    private function consistencyCheck(Player $player): void {
+        $player = $ev->getPlayer();
         $name = $player->getName();
         if(!isset($this->previousClick[$name])){
             $this->previousClick[$name] = microtime(true) * 1000;
             $this->allClicks[$name] = [];
             $this->allDeviations[$name] = [];
+            $this->averageDeviations[$name] = [];
             $this->level[$name] = 0;
             return;
         }
@@ -58,16 +57,19 @@ class AutoclickerB extends Cheat{
         }
         array_push($this->allClicks[$name], $time);
         $this->previousClick[$name] = microtime(true) * 1000;
-        if(count($this->allClicks[$name]) < 10) return;
+        if(count($this->allClicks[$name]) < 5) return;
         $averageTime = array_sum($this->allClicks[$name]) / count($this->allClicks[$name]);
         $deviation = abs($time - $averageTime);
         array_push($this->allDeviations[$name], $deviation);
-        if(count($this->allDeviations[$name]) < 10) return;
+        if(count($this->allDeviations[$name]) < 5) return;
         $averageDeviation = array_sum($this->allDeviations[$name]) / count($this->allDeviations[$name]);
-        if($averageDeviation < 10 && count($this->allDeviations[$name]) >= 35){
+        $this->getServer()->broadcastMessage("Average Deviation: $averageDeviation");
+        array_push($this->averageDeviations[$name], $averageDeviation);
+        if(count($this->averageDeviations[$name]) < 10) return;
+        if($averageDeviation < 20 && count($this->allDeviations[$name]) >= 20){
             $badDeviations = [];
             foreach($this->allDeviations[$name] as $number){
-                if($number < 10) array_push($badDeviations, $number);
+                if($number < 11) array_push($badDeviations, $number);
             }
             $badCount = count($badDeviations);
             if($badCount >= 25){
@@ -80,7 +82,18 @@ class AutoclickerB extends Cheat{
                     $this->level[$name] = 1;
                 }
             } else {
-                $this->level[$name] = $this->level[$name] * 0.5;
+                $minDeviation = min($this->averageDeviations[$name]);
+                $maxDeviation = max($this->averageDeviations[$name]);
+                $diffrence = $maxDeviation - $minDeviation;
+                if($diffrence <= 2.5){
+                    $this->increment($player->getName(), 1);
+                    $this->notifyAndIncrement($player, 4, 1, [
+                        "Ping" => $player->getPing()
+                    ]);
+                    $this->level[$name] = 1;
+                } else {
+                    $this->level[$name] = $this->level[$name] * 0.5;
+                }
             }
             $badDeviations = [];
         }
@@ -91,6 +104,10 @@ class AutoclickerB extends Cheat{
         if(count($this->allDeviations[$name]) >= 55){
             unset($this->allDeviations[$name]);
             $this->allDeviations[$name] = [];
+        }
+        if(count($this->averageDeviations[$name]) >= 55){
+            unset($this->averageDeviations[$name]);
+            $this->averageDeviations[$name] = [];
         }
     }
 
