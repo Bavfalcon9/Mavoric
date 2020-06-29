@@ -86,11 +86,14 @@ class AutoclickerB extends Cheat{
                 $maxDeviation = max($this->averageDeviations[$name]);
                 $diffrence = $maxDeviation - $minDeviation;
                 if($diffrence <= 2.5){
-                    $this->increment($player->getName(), 1);
-                    $this->notifyAndIncrement($player, 4, 1, [
-                        "Ping" => $player->getPing()
-                    ]);
-                    $this->level[$name] = 1;
+                    $this->level[$name] = $this->level[$name] + 1;
+                    if($this->level[$name] >= 2.5){
+                        $this->increment($player->getName(), 1);
+                        $this->notifyAndIncrement($player, 4, 1, [
+                            "Ping" => $player->getPing()
+                        ]);
+                        $this->level[$name] = 1;
+                    }
                 } else {
                     $this->level[$name] = $this->level[$name] * 0.5;
                 }
