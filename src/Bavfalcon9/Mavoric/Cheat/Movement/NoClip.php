@@ -1,9 +1,10 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
- *     | |\/| |/ _` \ \ / / _ \| "__| |/ __|
+ *     | |\/| |/ _` \ \ / / _ \| '__| |/ __|
  *     | |  | | (_| |\ V / (_) | |  | | (__ 
  *     |_|  |_|\__,_| \_/ \___/|_|  |_|\___|
  *                                          
@@ -15,6 +16,7 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Cheat\Movement;
 
 use pocketmine\Player;
@@ -52,24 +54,27 @@ class NoClip extends Cheat {
 
             foreach ([$blockA, $blockB] as $block) {
                 // To do, better AABB checks.
+                if ($block instanceof Transparent || $block instanceof Fallable) {
+                    $this->debug('Transparent/Fallable check triggered, so, avoided for: ' . $player->getName());
+                    return;
+                }
                 foreach ($block->getCollisionBoxes() as $bb) {
                     if (!$bb->isVectorInside($player)) {
                         $this->debug('Positive noclip check, Vector remains inside bounding box of: ' . $player->getName());
+                        $this->increment($player->getName(), 1);
+                        $this->notifyAndIncrement($player, 2, 1, [
+                            "BlockA" => $blockA->getName(),
+                            "BlockB" => $blockB->getName(),
+                            "Ping" => $player->getPing()
+                        ]);
+
+                        if ($this->isSuppressed()) {
+                            $ev->setCancelled(true);
+                        }
+                        return;
                     }
                 }
-                /*
-                if ($block instanceof Transparent || $block instanceof Fallable) {
-                    $this->debug('Transparent/Fallable check triggered, but not avoided for: ' . $player->getName());
-                }*/
             }
-
-            return;
-
-            $this->increment($player->getName(), 1);
-            $this->notifyAndIncrement($player, 2, 1, [
-                "Block" => $blockA->getName(),
-                "Ping" => $player->getPing()
-            ]);
         }
     }
 }

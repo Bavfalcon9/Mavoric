@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -15,14 +16,17 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric;
 
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\item\ItemFactory;
+use pocketmine\plugin\PluginException;
 use Bavfalcon9\Mavoric\Utils\Handlers\Pearl\FakePearl;
 use Bavfalcon9\Mavoric\Utils\Notifier;
 use Bavfalcon9\Mavoric\Utils\TpsCheck;
+use Bavfalcon9\Mavoric\Utils\Handlers\BaseHandler;
 use Bavfalcon9\Mavoric\Utils\Handlers\PearlHandler;
 use Bavfalcon9\Mavoric\Cheat\CheatManager;
 use Bavfalcon9\Mavoric\Cheat\Violation\ViolationData;
@@ -48,7 +52,6 @@ class Mavoric {
     private $handlers;
 
     public function __construct(Loader $plugin) {
-        /** Set variables */
         $this->plugin = $plugin;
         $this->tpsCheck = new TpsCheck($plugin, $this);
         $this->verboseNotifier = new Notifier($this, $plugin);
@@ -64,16 +67,12 @@ class Mavoric {
 
         /** Other checks */
         if (!class_exists('pocketmine\math\Facing')) {
-            $plugin->getServer()->getLogger()->debug('Using mathlib 0.2 instead of master (this will be deprecated soon)');
+            // Deprecated support
+            //throw new PluginException('pocketmine\math dependency out of date. Mavoric requires branch "master" or later. Update it with composer.');
+            //$plugin->getLogger()->critical('Using mathlib 0.2 instead of master (this will be deprecated soon)');
+            $plugin->getLogger()->critical('pocketmine\math dependency out of date. Mavoric will require branch "master" or later upon next release. Update it with composer.');
             self::$MATH_MODE = '0.2';
         }
-    }
-
-    /**
-     * Temporary function to post tick to tpscheck
-     */
-    public function postTick(int $tick) {
-        $this->tpsCheck->postTick($tick);
     }
 
     /**

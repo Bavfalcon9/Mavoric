@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -15,9 +16,11 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Cheat\Combat;
 
 use pocketmine\Player;
+use pocketmine\entity\Entity;
 use pocketmine\event\Listener;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
@@ -30,10 +33,6 @@ class Reach extends Cheat {
         parent::__construct($mavoric, 'Reach', 'Combat', $id, true);
     }
 
-    /**
-     * @param EntityDamageByEntityEvent $ev
-     * @return void
-     */
     public function onAttack(EntityDamageByEntityEvent $ev): void {
         $damager = $ev->getDamager();
         $damaged = $ev->getEntity();
@@ -41,18 +40,24 @@ class Reach extends Cheat {
         if (!($damager instanceof Player)) return;
         if ($ev instanceof EntityDamageByChildEntityEvent) return;
         if ($damager->isCreative()) return;
-        
-        $allowed = ($damager->getPing() >= 200) ? 6 + ($damager->getPing() * 0.003) : 6.2;
 
-        if ($damager->distance($damaged) > $allowed) {
+        if ($damager->distance($damaged) > $this->getAllowedDistance($damager)) {
             $this->increment($damager->getName(), 1); // increments Cheat flag
             $this->notifyAndIncrement($damager, 4, 1, [
                 "Entity" => $damaged->getId(),
                 "Distance" => $damager->distance($damaged),
                 "Ping" => $damager->getPing()
             ]);
-            $this->suppress($ev);
+            //$this->suppress($ev);
             return;
         }
-    }    
+    }
+
+    /**
+     * Get allowed distance for the damager
+     */
+    public function getAllowedDistance(Player $damager): float {
+        $projected = $damager->isOnGround() ? 4 : 6.2;
+        return ($damager->getPing() * 0.002) + $projected;
+    }
 }

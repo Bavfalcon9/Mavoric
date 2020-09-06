@@ -1,9 +1,10 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
- *     | |\/| |/ _` \ \ / / _ \| "__| |/ __|
+ *     | |\/| |/ _` \ \ / / _ \| '__| |/ __|
  *     | |  | | (_| |\ V / (_) | |  | | (__ 
  *     |_|  |_|\__,_| \_/ \___/|_|  |_|\___|
  *                                          
@@ -15,6 +16,7 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Cheat\Movement;
 
 use pocketmine\Player;
@@ -30,9 +32,9 @@ use Bavfalcon9\Mavoric\Cheat\CheatManager;
 use Bavfalcon9\Mavoric\Utils\EffectUtils;
 
 class FlightA extends Cheat {
-    /** @var int[] */
+    /** @var float[] */
     private $damageTimes;
-    /** @var int[] */
+    /** @var array[] */
     private $locationSessions;
 
     public function __construct(Mavoric $mavoric, int $id = -1) {
@@ -61,10 +63,10 @@ class FlightA extends Cheat {
         if ($player->getAllowFlight() === true) return;
         if ($player->isImmobile()) return;
         if ($player->getArmorInventory()->getChestPlate()->getId() === 444) return;
-        // To do: Implement proper calculations for effects
-        if (EffectUtils::getEffectLevel($player, Effect::LEVITATION) !== 0 || EffectUtils::getEffectLevel($player, Effect::JUMP_BOOST) !== 0) {
-            $player->resetFallDistance();
-        }
+        // To do: Implement proper calculations for effects (IMPLEMENT THIS CLASS)
+        //if (EffectUtils::getEffectLevel($player, Effect::LEVITATION) !== 0 || EffectUtils::getEffectLevel($player, Effect::JUMP_BOOST) !== 0) {
+        //    $player->resetFallDistance();
+        //}
 
         if (Mavoric::$MATH_MODE === '0.2') {
             $blockAbove = $player->getLevel()->getBlock($player)->getSide(Vector3::SIDE_UP);

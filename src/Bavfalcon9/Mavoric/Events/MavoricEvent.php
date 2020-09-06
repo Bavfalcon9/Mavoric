@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -16,7 +17,7 @@
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
 
-namespace Bavfalcon9\Mavoric;
+namespace Bavfalcon9\Mavoric\Events;
 
 use pocketmine\event\Event;
 use Bavfalcon9\Mavoric\Mavoric;
@@ -24,11 +25,8 @@ use Bavfalcon9\Mavoric\Mavoric;
 class MavoricEvent extends Event {
     /** @var Mavoric */
     private $mavoric;
-    /** @var ViolationHandler */
-    protected $violationHandler;
 
     public function __construct(Mavoric $mavoric) {
         $this->mavoric = $mavoric;
-        $this->violationHandler = $mavoric->getViolationHandler();
     }
 }

@@ -1,9 +1,10 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
- *     | |\/| |/ _` \ \ / / _ \| "__| |/ __|
+ *     | |\/| |/ _` \ \ / / _ \| '__| |/ __|
  *     | |  | | (_| |\ V / (_) | |  | | (__ 
  *     |_|  |_|\__,_| \_/ \___/|_|  |_|\___|
  *                                          
@@ -15,6 +16,7 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Cheat\Movement;
 
 use pocketmine\Player;
@@ -35,6 +37,9 @@ class SpeedA extends Cheat {
         $this->lastMovements = [];
     }
 
+    /**
+     * @priority Highest
+     */
     public function onPlayerMove(PlayerMoveEvent $ev): void {
         $player = $ev->getPlayer();
         $to = $ev->getTo();
@@ -59,6 +64,9 @@ class SpeedA extends Cheat {
                 "Distance" => sqrt($distX + $distZ),
                 "Ping" => $player->getPing()
             ]);
+            if ($this->isSuppressed()) {
+                $ev->setCancelled(true);
+            }
         }
         $this->lastMovements[$player->getId()] = $this->getServer()->getTick();
     }

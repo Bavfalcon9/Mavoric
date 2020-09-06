@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -15,6 +16,7 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Cheat\Movement;
 
 use pocketmine\Player;
@@ -28,6 +30,6 @@ use Bavfalcon9\Mavoric\Events\Player\PlayerVelocityEvent;
 
 class Velocity extends Cheat {
     public function __construct(Mavoric $mavoric, int $id = -1) {
-        parent::__construct($mavoric, 'Velocity', 'Movement', 6, false);
+        parent::__construct($mavoric, 'Velocity', 'Movement', $id, false);
     }
 }

@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -16,7 +17,6 @@
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
 
-
 namespace Bavfalcon9\Mavoric\Utils;
 
 use pocketmine\entity\Entity;
@@ -24,16 +24,16 @@ use pocketmine\Player;
 use pocketmine\Server;
 
 class PlayerResolvable {
-    /** @var Mixed */
+    /** @var Player|string|null */
     private $player;
 
-    public function __construct(Mixed $search) {
+    public function __construct($search) {
         $this->player = $search;
     }
 
     /**
      * Gets the player instance if exists
-     * @return Player|Null
+     * @return Player|null
      */
     public function getPlayer(): ?Player {
         $server = Server::getInstance();

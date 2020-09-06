@@ -17,26 +17,38 @@
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
 
-namespace Bavfalcon9\Mavoric\Tasks;
+namespace Bavfalcon9\Mavoric\Events\Module;
 
-use pocketmine\Player;
-use pocketmine\Server;
-use pocketmine\scheduler\Task;
+use pocketmine\event\Event;
 use Bavfalcon9\Mavoric\Mavoric;
-use Bavfalcon9\Mavoric\Loader;
 
-class KickTask extends Task {
-    private $player;
-    private $reason;
+/**
+ * Called when mavoric modules are disabled, this is not cancellable.
+ */
+class ModuleDisabledEvent extends Event {
+    /** @var string */
+    protected $module;
+    /** @var string[] */
+    protected $cheats;
 
-    public function __construct(Player $player, string $reason) {
-        $this->player = $player;
-        $this->reason = $reason;
+    public function __construct(string $module, array $cheats = []) {
+        $this->module = $module;
+        $this->cheats = $cheats;
     }
 
-    public function onRun(int $tick) {
-        if (!Server::getInstance()->getPlayerExact($this->player->getName())) return;
+    /**
+     * Returns the module name
+     * @return string
+     */
+    public function getModule(): string {
+        return $this->module;
+    }
 
-        $this->player->close('', $this->reason);
+    /**
+     * Returns the cheats consisted in the module
+     * @return string[]
+     */
+    public function getCheats(): array {
+        return $this->cheats;
     }
 }

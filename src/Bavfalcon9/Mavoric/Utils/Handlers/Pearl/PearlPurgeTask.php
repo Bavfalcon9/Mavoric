@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -13,7 +14,7 @@
  *  (at your option) any later version.
  * 
  *  @author Bavfalcon9
- *  @link https://github.com/Olybear9/Mavoric                                  
+ *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
 
 namespace Bavfalcon9\Mavoric\Utils\Handlers\Pearl;

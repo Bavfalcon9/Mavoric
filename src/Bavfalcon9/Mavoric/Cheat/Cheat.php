@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -15,6 +16,7 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Cheat;
 
 use pocketmine\Player;
@@ -24,7 +26,7 @@ use pocketmine\event\Listener;
 use Bavfalcon9\Mavoric\Mavoric;
 
 class Cheat implements Listener {
-    /** @var Mavorc */
+    /** @var Mavoric */
     protected $mavoric;
     /** @var int[] */
     protected $violations;
@@ -156,12 +158,11 @@ class Cheat implements Listener {
     }
 
     /**
-     * @return void
+     * @return bool
      */
-    public function suppress(Event $event): void {
-        /** for now this is always true */
-        $event->setCancelled(true);
-        return;
+    public function isSuppressed(): bool {
+        // To Do: Check config
+        return true;
     }
 
     /**

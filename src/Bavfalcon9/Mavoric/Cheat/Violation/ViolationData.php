@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -15,6 +16,7 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Cheat\Violation;
 
 use pocketmine\Player;
@@ -23,17 +25,17 @@ use Bavfalcon9\Mavoric\Cheat\Cheat;
 use Bavfalcon9\Mavoric\Events\Violation\ViolationChangeEvent;
 
 class ViolationData {
-    /** @var Array[] */
+    /** @var int[] */
     private $levels;
     /** @var Player */
     private $player;
     /** @var string */
     private $playerName;
-    /** @var int */
+    /** @var float */
     private $lastAddition;
-    /** @var int */
+    /** @var int|float */
     private $incrementsTime;
-    /** @var int */
+    /** @var int|float */
     private $incrementsLast;
 
     public function __construct(Player $player) {
@@ -71,9 +73,9 @@ class ViolationData {
      * Deincrements a violation level
      * @param string $cheat - Cheat to deincrement
      * @param int $amount - How much to deincrement
-     * @return int
+     * @return int|null
      */
-    public function deincrementLevel(string $cheat, int $amount = 1): int {
+    public function deincrementLevel(string $cheat, int $amount = 1): ?int {
         $this->updateIncrementTime(-1);
         $ev = new ViolationChangeEvent($this->player, $cheat, $amount, $this->levels[$cheat] ?? 0, $this, false);
         $ev->call();
@@ -91,7 +93,7 @@ class ViolationData {
 
     /**
      * Gets the sum of all cheat violations
-     * @return int|null
+     * @return int
      */
     public function getViolationCountSum(): int {
         return array_sum(array_values($this->levels));
@@ -144,7 +146,6 @@ class ViolationData {
 
     /**
      * Gets the violation level for a given cheat or player
-     * @return string
      */
     public function getLevel(string $cheat): ?int {
         return (!isset($this->levels[$cheat])) ? null : $this->levels[$cheat];
@@ -152,7 +153,7 @@ class ViolationData {
     
     /**
      * Gets the violation map for all cheats
-     * @return string[]
+     * @return int[]
      */
     public function getLevels(): array {
         return $this->levels;
@@ -168,15 +169,15 @@ class ViolationData {
 
     /**
      * Gets the difference from when last time a violation tick was added to now.
-     * @return int
+     * @return float
      */
-    public function getLastAdditionFromNow(): int {
+    public function getLastAdditionFromNow(): float {
         return (microtime(true) - $this->lastAddition);
     }
 
     /**
      * Clears the violation data
-     * @return string[]
+     * @return int[]
      */
     public function clear(): array {
         return $this->levels = [];
@@ -206,7 +207,7 @@ class ViolationData {
     /**
      * Updates the last addition time
      */
-    private function updateIncrementTime(int $amt = 1): void {
+    private function updateIncrementTime(float $amt = 1): void {
         $this->lastAddition = \microtime(true);
         if ($this->incrementsTime + 1 <= \microtime(true)) {
             $this->incrementsLast = 0;

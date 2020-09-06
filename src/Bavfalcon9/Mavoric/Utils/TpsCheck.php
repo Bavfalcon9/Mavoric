@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -15,6 +16,7 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Utils;
 use pocketmine\scheduler\Task;
 use pocketmine\scheduler\AsyncTask;
@@ -134,7 +136,7 @@ class TpsCheck {
                 if (!$mavoric) {
                     return;
                 } else {
-                    $mavoric->getMavoric()->postTick($diff);
+                    $mavoric->getMavoric()->tpsCheck->postTick($diff);
                 }
             })
         );

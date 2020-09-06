@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -15,6 +16,7 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Utils\Handlers;
 
 use pocketmine\event\Listener;
@@ -24,7 +26,7 @@ use Bavfalcon9\Mavoric\Utils\Handlers\Pearl\PearlThrownEvent;
 use Bavfalcon9\Mavoric\Utils\Handlers\Pearl\PearlThrow;
 use Bavfalcon9\Mavoric\Utils\Handlers\Pearl\PearlPurgeTask;
 
-class PearlHandler implements Listener {
+class PearlHandler extends BaseHandler {
     /** @var PearlThrow[] */
     private static $throws = [];
     /** @var PearlHandler */
@@ -77,7 +79,7 @@ class PearlHandler implements Listener {
 
     /**
      * Clears throws from memory for performance reasons.
-     * @return void
+     * @return int
      */
     public function purge(): int {
         $purged = 0;
@@ -110,7 +112,7 @@ class PearlHandler implements Listener {
     /**
      * Returns the most recent throw from a player
      * @param string $player - Player name
-     * @return PearlThrow|Null - The most recent thrown pearl from player
+     * @return PearlThrow|null - The most recent thrown pearl from player
      */
     public static function getMostRecentThrowFrom(string $player): ?PearlThrow {
         $throws = self::getThrowsFrom($player);

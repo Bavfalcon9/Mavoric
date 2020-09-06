@@ -5,7 +5,7 @@ Webhooks:
   reports: false
   network: false
 Options:
-  developer-mode: false # Whether or not to use checks that may be unstable
+  developer-mode: false # Whether or not to use checks that may be unstable (this is currently ignored)
   packet-detection: false # Determine whether a packet is geninue
   default-violation-limit: 80 # Default is 80
 Modules:

@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -92,7 +93,7 @@ class ViolationChangeEvent extends Event implements Cancellable {
 
     /**
      * Gets the total amount that the violation changed.
-     * @return int
+     * @return bool
      */
     public function isIncreased(): bool {
         return $this->increased;

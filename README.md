@@ -16,53 +16,58 @@
   </p>
 </div>
 
-## Description
-Mavoric is a plugin designed to enforce the generic functions of MC:BE. Mavoric is designed to execute and enforce 
-general cheat detection powerfully without a hassle. <br />
-**Note:** Mavoric is intended to be lightweight in terms of a fully functional anticheat. 
-
-## Developers
-If you use any code present here, please have the code reference this repository.
 
 ## Information
-Mavoric is feature rich, with TPS checks, cheat checks, banwaves, autobans and autokicks to help you stop cheaters. <br />
+Mavoric is a plugin designed to enforce the generic functions of MC:BE. Mavoric is designed to execute and enforce 
+general cheat detection powerfully without a hassle. <br /><br />
+Mavoric is feature rich, with TPS checks, cheat checks, banwaves, autobans and autokicks to help you stop cheaters, with the addition of v2.x.x these are much easier to configure.<br />
+**Note:** Mavoric was originally intended to be light weight, but in an effort for better cheat detection, we have dropped this goal.
+However not all is lost, we plan on adding light weight things in the future.
+<br /><br />
 Mavoric currently features detections for:
+ - AutoArmor
+ - AirJump
  - AutoClicker
+ - Macros
  - Flight
  - Multiaura
  - Speed
  - ClickTP
  - JetPack
  - HighJump
+ - PacketOrder (bad packet sequence)
+ - Nuker
+ - NoClip
+ - No Swing
+ - Aim bot
+ - Velocity
 
- Disclaimer: Mavoric is still currently in development and I can not ensure that you will recieve a 100% bug free experience.
-If you have any bugs or suggestions, please feel free to report them on this repository by clicking [here](https://github.com/Bavfalcon9/Mavoric/issues/new).
+Disclaimer: Mavoric is still currently in development and I can not ensure that you will recieve a 100% bug free experience.
+If you have any bugs or suggestions, please feel free to report them on this repository by clicking [here](https://github.com/Bavfalcon9/Mavoric/issues/new) as we are actively doing our best to provide the best anticheat we can.
 
+## Developers
+If you use any code present here, please have the code reference this repository. 
+While this is not a requirement, it helps maintain the credibility of mavoric by ensuring all owners of code written recieve proper credit. <br />
+Referencing should be as shown: 
+```php
+/**
+ * @author Bavfalcon9
+ * @title Mavoric
+ * @version <gitCommit>
+ */
+```
 
 ## History
 Early stages of Mavoric were originally developed for the [OwnagePE](shop.ownagepe.com) network, 
 after multiple failed attempts at making something functional, Mavoric was then taken into private development 
 for improvements and shortly after made an appearance on [Versai](versai.pro) in August 2019 where it has been 
-used on a mass scale to help improve it's overall functionality.
+used on a mass scale to help improve it's overall functionality. Mavoric is also planned to be used on [RaptorsMC](discord.raptorsmc.com)
+which is a upcoming minigame server with unique minigames.
 
 ## Versions
-This is a list of **public** releases, and with detail about each release and a provided download.
-
+This is a list of **public** releases for v2.0.0 and later, with detail about each release and a provided download. 
+If you wish to view releases prior to v2.0.0 please [click here](https://github.com/Bavfalcon9/Mavoric/tree/v2.0.0/resources/github/Releases.md)<br/>
+Releases containing a asterisk (`*`) are development releases and are expected to have bugs and issues.
 Version | Released | Completed | Download 
 ------- | ------- | ---------- | --------
-v0.0.6 | October 26th 2019 | ✔ Yes | [Mavoric_v0.1.6](https://github.com/Bavfalcon9/Mavoric/releases/download/v0.1.6/Mavoric_v0.1.6.phar)
-v0.0.7 | November 3rd 2019 | ✔ Yes | [Mavoric_v0.1.7](https://github.com/Bavfalcon9/Mavoric/releases/download/v0.1.7/Mavoric_v0.1.7.phar)
-v1.0.0 | Janurary 22nd 2020 | ✔ Yes | [Mavoric_v1.0.0](https://github.com/Bavfalcon9/Mavoric/releases/download/v1.0.0/Mavoric_v1.0.0.phar)
-v1.0.1 | Never | ✔ Yes | ~~[Mavoric_v1.0.1](https://github.com/Bavfalcon9/Mavoric/releases)~~
-v1.0.2 | Feburary 7th 2020 | ✔ Yes | [Mavoric_v1.0.2](https://github.com/Bavfalcon9/Mavoric/releases/download/v1.0.2/Mavoric_v1.0.2.phar)
-v1.0.3 | March 3rd 2020 | ✔ Yes | [Mavoric_v1.0.3](https://github.com/Bavfalcon9/Mavoric/releases/download/v1.0.3/Mavoric_v1.0.3.phar)
-v1.0.4 | March 19th 2020 | ✔ Yes | [Mavoric_v1.0.4](https://github.com/Bavfalcon9/Mavoric/releases/download/v1.0.4/Mavoric_v1.0.4.phar)
-v1.0.5 | March 23rd 2020 | ✔ Yes | [Mavoric_v1.0.5](https://github.com/Bavfalcon9/Mavoric/releases/download/v1.0.5/Mavoric_v1.0.5.phar)
-v1.0.6 | Unknown | ❌ No | [Mavoric_v1.0.6](https://github.com/Bavfalcon9/Mavoric/releases/download/v1.0.5/Mavoric_v1.0.6.phar)
-
-### API Versions
-Version | Released | Maintained | Details
-------- | -------- | ---------- | -------
-v0.0.**X** | June 14th 2019 | ❌ No | Initial release of Mavoric, consists of detection list with poor handling.
-v1.0.**X** | November 3rd 2019 | ❌ No | Consists of core improvments for event handling and code improvements.
-v2.0.**X** | ❌ No | ✔ In Progress | Consists of core changes which provide cheat modulation.
+v2.0.0-alpha`*` | June 28th 2020 | ✔ Yes | `*`[Mavoric_v2.0.0-alpha](https://github.com/Bavfalcon9/Mavoric/releases/download/v2.0.0/Mavoric_v2.0.0.phar)

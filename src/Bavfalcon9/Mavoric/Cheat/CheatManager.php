@@ -1,5 +1,6 @@
 <?php
-/***
+
+/**
  *      __  __                       _      
  *     |  \/  |                     (_)     
  *     | \  / | __ ___   _____  _ __ _  ___ 
@@ -15,13 +16,16 @@
  *  @author Bavfalcon9
  *  @link https://github.com/Bavfalcon9/Mavoric                                  
  */
+
 namespace Bavfalcon9\Mavoric\Cheat;
 
 use pocketmine\utils\TextFormat as TF;
 use Bavfalcon9\Mavoric\Mavoric;
 use Bavfalcon9\Mavoric\Loader;
+use Bavfalcon9\Mavoric\Events\Module\ModuleDisabledEvent;
 
 class CheatManager {
+    /** @var string[] */
     public const MODULES = [
         'Movement',
         'Combat'
@@ -30,7 +34,7 @@ class CheatManager {
     private $plugin;
     /** @var Mavoric */
     private $mavoric;
-    /** @var ModuleMap */
+    /** @var array */
     private $modules;
     /** @var bool */
     private $registered = false;
@@ -50,10 +54,12 @@ class CheatManager {
     /**
      * Registers all cheat modules
      * @return void
+     * @prority 30
      */
     public function registerModules(): void {
         $modulesLoaded = 0;
         foreach (self::MODULES as $module) {
+            // To do: Make a module class, new Module($name).
             $this->modules[$module] = [];
             $cheats = \scandir($this->getPathBase() . $module);
             foreach ($cheats as $cheat) {
@@ -80,10 +86,8 @@ class CheatManager {
      */
     public function disableModules(): void {
         foreach ($this->modules as $moduleName => $cheats) {
-            foreach ($cheats as $cheat) {
-                // call an event?
-                
-            }
+            $ev = new ModuleDisabledEvent($moduleName, $cheats);
+            $ev->call();
             unset($this->modules[$moduleName]);
         }
 
@@ -91,8 +95,30 @@ class CheatManager {
     }
 
     /**
+     * Register a cheat to the module name within the cheat provided
+     * @param Cheat $cheat - Cheat to register
+     * @return bool $registered
+     */
+    public function registerCheat(Cheat $cheat): bool {
+        if (!isset($this->modules[$cheat->getModule()])) return false;
+        
+        // To Do: Change this when i finish module classes
+        $module = &$this->modules[$cheat->getModule()];
+        $exists = array_filter($module, function ($loadedCheat): bool {
+            return ($loadedCheat->getName() === $cheat->getName());
+        });
+
+        if (count($exists) > 0) {
+            return false;
+        }
+
+        $module[] = $cheat;
+        return true;
+    }
+
+    /**
      * Gets the base path for the cheats.
-     * @return sting
+     * @return string
      */
     protected function getPathBase(): string {
         return $this->plugin->getFilePath() . 'src/Bavfalcon9/Mavoric/Cheat/';
@@ -100,7 +126,7 @@ class CheatManager {
 
     /**
      * Gets the base path for the cheats.
-     * @return sting
+     * @return string
      */
     protected function getClassBase(): string {
         return "Bavfalcon9\\Mavoric\\Cheat\\";
